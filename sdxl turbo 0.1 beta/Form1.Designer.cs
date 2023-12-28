@@ -1,4 +1,4 @@
-﻿namespace sdxl_turbo_0._1_beta
+namespace sdxl_turbo_0._1_beta
 {
     partial class Form1
     {
@@ -50,6 +50,7 @@
             this.promp.Name = "promp";
             this.promp.Size = new System.Drawing.Size(314, 24);
             this.promp.TabIndex = 0;
+            this.promp.KeyDown += new System.Windows.Forms.KeyEventHandler(this.promp_KeyDown);
             // 
             // generate
             // 
@@ -162,7 +163,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "sdxl turbo 1.0 beta";
+            this.Text = "sdxl turbo 1.2 beta";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.picture_result)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture_input)).EndInit();
             this.ResumeLayout(false);
