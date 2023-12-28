@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,6 +19,7 @@ namespace sdxl_turbo_0._1_beta
     public partial class Form1 : Form
     {
         string url = "https://modal-labs--stable-diffusion-xl-turbo-model-inference.modal.run/";
+        int generate_start = 0;
 
         public Form1()
         {
@@ -47,6 +48,8 @@ namespace sdxl_turbo_0._1_beta
                 {
                     using (MemoryStream memoryStream = new MemoryStream())
                     {
+                        generate.Enabled = false;
+                        generate.Text = "Генерирую...";
                         picture_input.Image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
 
                         byte[] imageBytes = memoryStream.ToArray();
@@ -59,7 +62,7 @@ namespace sdxl_turbo_0._1_beta
                             formData.Headers.Add("promp", prompet);
                             formData.Add(fileContent, "image", "photo.png");
                             formData.Add(new StringContent("2"), "num_iterations");
-                            formData.Add(new StringContent(prompet), "prompt"); 
+                            formData.Add(new StringContent(prompet), "prompt");
 
                             client.DefaultRequestHeaders.Add("authority", "modal-labs--stable-diffusion-xl-turbo-model-inference.modal.run");
                             client.DefaultRequestHeaders.Add("accept", "*/*");
@@ -78,7 +81,8 @@ namespace sdxl_turbo_0._1_beta
                             if (response.IsSuccessStatusCode)
                             {
                                 var resultImageBytes = await response.Content.ReadAsByteArrayAsync();
-
+                                generate.Text = "Генерировать";
+                                generate.Enabled = true;
                                 using (MemoryStream ms = new MemoryStream(resultImageBytes))
                                 {
                                     System.Drawing.Image resultImage = System.Drawing.Image.FromStream(ms);
@@ -146,6 +150,30 @@ namespace sdxl_turbo_0._1_beta
             else
             {
                 MessageBox.Show("Нет изображения для сохранения!");
+            }
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.V)
+            {
+                if (Clipboard.ContainsImage())
+                {
+                    System.Drawing.Image clipboardImage = Clipboard.GetImage();
+                    picture_input.Image = clipboardImage;
+                }
+            }
+        }
+
+        private void promp_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.V)
+            {
+                if (Clipboard.ContainsImage())
+                {
+                    System.Drawing.Image clipboardImage = Clipboard.GetImage();
+                    picture_input.Image = clipboardImage;
+                }
             }
         }
     }
